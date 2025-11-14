@@ -4,7 +4,6 @@ import string
 from nltk.corpus import stopwords
 import nltk
 import numpy as np
-from streamlit_lottie import st_lottie
 import requests
 from datetime import datetime
 import os
