@@ -71,20 +71,6 @@ def get_detailed_sentiment(prediction, confidence):
         else: return "Slightly Negative"
 
 # -----------------------------
-# Load Lottie animation
-# -----------------------------
-def load_lottieurl(url: str):
-    try:
-        r = requests.get(url)
-        if r.status_code != 200:
-            return None
-        return r.json()
-    except:
-        return None
-
-lottie_analyze = load_lottieurl("https://assets7.lottiefiles.com/packages/lf20_2ys3w4dj.json")
-
-# -----------------------------
 # Initialize session state
 # -----------------------------
 if 'history' not in st.session_state:
@@ -102,7 +88,6 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-
 # -----------------------------
 # Load External CSS
 # -----------------------------
@@ -119,21 +104,19 @@ def load_css():
         load_fallback_css()
 
 def load_fallback_css():
-    
-    
-    
-    
-    
     st.markdown("""
     <style>
-        body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            margin: 0;
-            padding: 0;
+        .stApp {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
         }
-        .main .block-container { padding-top: 0; }
-        #MainMenu, footer, header { visibility: hidden; }
+        .main .block-container {
+            padding-top: 0rem !important;
+            padding-bottom: 0rem !important;
+            max-width: 100% !important;
+        }
+        #MainMenu, footer, header { 
+            visibility: hidden !important; 
+        }
     </style>
     """, unsafe_allow_html=True)
 
@@ -160,49 +143,48 @@ st.markdown("""
 
 # Hero Section
 st.markdown("""
-<style>
-.hero-section { padding: 20px; background-color:#f7fafc; border-radius:100px; }
-.logo-section { text-align:center; margin-bottom:20px; }
-.logo { font-size:32px; color:#2d3748; }
-.hero-subtitle { font-size:18px; color:#4a5568; }
-.stats-container { display:flex; justify-content:center; gap:50px; font-weight:bold; }
-.stat-item { text-align:center; }
-.stat-number { font-size:24px; }
-</style>
-
-<div class="hero-section">
-    <div class="logo-section">
-        <div class="logo">Sentiments</div>
-        <div class="stats-container">
-        <div class="stat-item">
-            <div class="stat-number" style="color: #48bb78;">98%</div>
-            <div class="stat-label">Accuracy</div>
-        </div>
-        <div class="stat-item">
-            <div class="stat-number" style="color: #667eea;">10K+</div>
-            <div class="stat-label">Analyses</div>
-        </div>
-        <div class="stat-item">
-            <div class="stat-number" style="color: #ed8936;">0.2s</div>
-            <div class="stat-label">Response Time</div>
+<div style="max-width: 1000px; margin: 0 auto;">
+    <div class="hero-section">
+        <div class="logo-section">
+            <div class="logo">Sentiments</div>
+            <div class="stats-container">
+                <div class="stat-item">
+                    <div class="stat-number" style="color: #48bb78;">98%</div>
+                    <div class="stat-label">Accuracy</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" style="color: #667eea;">10K+</div>
+                    <div class="stat-label">Analyses</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" style="color: #ed8936;">0.2s</div>
+                    <div class="stat-label">Response Time</div>
+                </div>
+            </div>
+            <div class="hero-subtitle">AI-Powered Text Emotion Analysis</div>
         </div>
     </div>
-        <div class="hero-subtitle">AI-Powered Text Emotion Analysis</div>
-    
 </div>
 """, unsafe_allow_html=True)
 
-# Lottie Animation
-if lottie_analyze:
-    try:
-        st_lottie(lottie_analyze, height=300, key="hero_lottie")
-    except Exception as e:
-        st.warning("Lottie animation couldn't be loaded")
+# Add a nice visual element instead of Lottie
+st.markdown("""
+<div style="text-align: center; margin: 2rem 0;">
+    <div style="font-size: 4rem;">🔮</div>
+    <div style="font-size: 1.2rem; color: #666;">Ready to analyze your text sentiment!</div>
+</div>
+""", unsafe_allow_html=True)
 
 # -----------------------------
 # Analysis Section
 # -----------------------------
 st.markdown("""<a name="analysis-section"></a>""", unsafe_allow_html=True)
+
+# Create analysis container
+st.markdown("""
+<div style="max-width: 1000px; margin: 0 auto;">
+    <div class="analysis-card">
+""", unsafe_allow_html=True)
 
 # File upload option
 uploaded_file = st.file_uploader("📁 Upload a text file", type=['txt'], help="Upload .txt files for analysis")
@@ -250,8 +232,6 @@ if user_input and len(user_input.split()) > 3:
             except Exception as e:
                 st.error(f"Preview analysis error: {e}")
 
-st.markdown("</div>", unsafe_allow_html=True)
-
 # Sentiment Analysis Results
 if analyze_clicked and user_input.strip():
     try:
@@ -296,22 +276,18 @@ if analyze_clicked and user_input.strip():
     except Exception as e:
         st.error(f"❌ Analysis failed: {str(e)}")
 
-# -----------------------------
-# About Section
-# -----------------------------
-st.markdown("""<a name="about-section"></a>""", unsafe_allow_html=True)
-st.markdown("""
-
-""", unsafe_allow_html=True)
-
-
-
-st.markdown("</div>", unsafe_allow_html=True)
+st.markdown("</div></div>", unsafe_allow_html=True)
 
 # -----------------------------
 # History Section
 # -----------------------------
 st.markdown("""<a name="history-section"></a>""", unsafe_allow_html=True)
+
+st.markdown("""
+<div style="max-width: 1000px; margin: 0 auto;">
+    <div class="analysis-card">
+""", unsafe_allow_html=True)
+
 # Filter buttons
 st.subheader("Filter by Sentiment:")
 filter_cols = st.columns(3)
@@ -329,6 +305,7 @@ with filter_cols[2]:
         st.rerun()
 
 st.info(f"Showing: {st.session_state.current_filter.title()} analyses")
+
 if st.session_state.history:
     if st.button("🗑️ Clear All History", use_container_width=True):
         st.session_state.history = []
@@ -362,21 +339,44 @@ if st.session_state.history:
 else:
     st.info("📝 No analysis history yet. Analyze some text to see your history here!")
 
-st.markdown("</div>", unsafe_allow_html=True)
+st.markdown("</div></div>", unsafe_allow_html=True)
+
 # -----------------------------
 # Footer
 # -----------------------------
 st.markdown("""<a name="contact-section"></a>""", unsafe_allow_html=True)
 st.markdown("""
-<div class="footer">
-    <h3>🔗 Connect With Me</h3>
-    <p>Made with ❤️ by Newaz | Advanced Sentiment Analysis Powered by Machine Learning</p>
-    <div class="social-links">
-        <a href='https://x.com/newaznezif53' target='_blank'>🐦 Twitter</a>
-        <a href='https://www.linkedin.com/in/newaz-nezif-285439262/' target='_blank'>💼 LinkedIn</a>
-        <a href='https://github.com/Newaznezif' target='_blank'>🐙 GitHub</a>
-        <a href='newaznezif@gmail.com'>📧 Email</a>
+<div style="max-width: 1000px; margin: 0 auto;">
+    <div class="footer">
+        <h3>🔗 Connect With Me</h3>
+        <p>Made with ❤️ by Newaz | Advanced Sentiment Analysis Powered by Machine Learning</p>
+        <div class="social-links">
+            <a href='https://x.com/newaznezif53' target='_blank'>🐦 Twitter</a>
+            <a href='https://www.linkedin.com/in/newaz-nezif-285439262/' target='_blank'>💼 LinkedIn</a>
+            <a href='https://github.com/Newaznezif' target='_blank'>🐙 GitHub</a>
+            <a href='mailto:newaznezif@gmail.com'>📧 Email</a>
+        </div>
+        <small>&copy; 2025 Sentiments. All rights reserved.</small>
     </div>
-    <small>&copy; 2025 Sentiments. All rights reserved.</small>
 </div>
+""", unsafe_allow_html=True)
+
+# Add JavaScript for smooth scrolling
+st.markdown("""
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+});
+</script>
 """, unsafe_allow_html=True)
